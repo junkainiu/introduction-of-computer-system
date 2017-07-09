@@ -246,7 +246,9 @@ int isPositive(int x) {
  */
 int isLessOrEqual(int x, int y) {
   int tmp = y + ~x + 1;
-  return (!((y>>31) & ~(x>>31))) & (((!(y>>31&1)) & (x>>31 & 1)) | (!(tmp>>31 & 1)));
+  int x_sign = x>>31;
+  int y_sign = y>>31;
+  return (!(y_sign & ~x_sign)) & (((!y_sign) & x_sign) | (!(tmp>>31 & 1)));
 }
 /*
  * ilog2 - return floor(log base 2 of x), where x > 0
