@@ -171,7 +171,7 @@ int logicalShift(int x, int n) {
  *   Rating: 4
  */
 int bitCount(int x) {
-  return 2;
+  return x>>1;
 }
 /*
  * bang - Compute !x without using !
@@ -181,7 +181,9 @@ int bitCount(int x) {
  *   Rating: 4
  */
 int bang(int x) {
-  return 2;
+  int r_x = ~x;
+  int tmp = (x>>31&1) | (((r_x+1)>>31)&1);
+  return ~tmp + 2;
 }
 /*
  * tmin - return minimum two's complement integer
