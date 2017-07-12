@@ -171,7 +171,16 @@ int logicalShift(int x, int n) {
  *   Rating: 4
  */
 int bitCount(int x) {
-  return x>>1;
+    int double_merge = 0x55 | (0x55<<8) | (0x55<<16) | (0x55<<24);
+    int four_merge = 0x33 | (0x33<<8) | (0x33<<16) | (0x33<<24);
+    int eight_merge = 0x0f | (0x0f<<8) | (0x0f<<16) | (0x0f<<24);
+    int sixteen_merge = 0xff | (0xff<<16);
+    x = (x&double_merge) + ((x>>1)&double_merge);
+    x = (x&four_merge) + ((x>>2)&four_merge);
+    x = (x&eight_merge) + ((x>>4)&eight_merge);
+    x = (x&sixteen_merge) + ((x>>8)&sixteen_merge);
+    x = x + (x>>16);
+    return x&0x3f;
 }
 /*
  * bang - Compute !x without using !
@@ -216,8 +225,7 @@ int fitsBits(int x, int n) {
  *   Rating: 2
  */
 int divpwr2(int x, int n) {
-    int m_n = n + ~0;
-    return (x + (((x>>31)&(1<<m_n)))) >> n;
+    return (x + (((x>>31)&((1<<n)+(~0))))) >> n;
 }
 /*
  * negate - return -x
@@ -260,7 +268,13 @@ int isLessOrEqual(int x, int y) {
  *   Rating: 4
  */
 int ilog2(int x) {
-  return 2;
+  int res = 0;
+  res = (!!(x>>16)) << 4;
+  res = res + ((!!(x>>(res+8)))<<3);
+  res = res + ((!!(x>>(res+4)))<<2);
+  res = res + ((!!(x>>(res+2)))<<1);
+  res = res + (!!(x>>(res+1)));
+  return res;
 }
 /*
  * float_neg - Return bit-level equivalent of expression -f for
