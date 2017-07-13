@@ -288,7 +288,12 @@ int ilog2(int x) {
  *   Rating: 2
  */
 unsigned float_neg(unsigned uf) {
- return 2;
+    unsigned int uf_u = uf & 0x7fffffff;
+    if(uf_u > 0x7f800000u){
+        return uf;
+    } else {
+        return uf ^ 0x80000000;
+    }
 }
 /*
  * float_i2f - Return bit-level equivalent of expression (float) x
@@ -300,7 +305,7 @@ unsigned float_neg(unsigned uf) {
  *   Rating: 4
  */
 unsigned float_i2f(int x) {
-  return 2;
+  return 0;
 }
 /*
  * float_twice - Return bit-level equivalent of expression 2*f for

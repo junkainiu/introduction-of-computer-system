@@ -1,0 +1,2 @@
+1. bits(x, y)
+2. bits(bitc(x, y), bitc(y, x))

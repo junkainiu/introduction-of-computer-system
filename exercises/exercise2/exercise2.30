@@ -1,0 +1,7 @@
+int res = x + y;
+if -2w<<res<-2w-1:
+    return 1
+elif 2w-1 <=res<2w:
+    return 1
+else:
+    return x+y
