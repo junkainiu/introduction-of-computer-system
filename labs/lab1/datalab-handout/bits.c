@@ -288,7 +288,7 @@ int ilog2(int x) {
  *   Rating: 2
  */
 unsigned float_neg(unsigned uf) {
-    unsigned int uf_u = uf & 0x7fffffff;
+    unsigned uf_u = uf & 0x7fffffff;
     if(uf_u > 0x7f800000u){
         return uf;
     } else {
@@ -305,7 +305,32 @@ unsigned float_neg(unsigned uf) {
  *   Rating: 4
  */
 unsigned float_i2f(int x) {
-  return 0;
+    unsigned absx = x;
+    unsigned pos = 0;
+    unsigned flag = 0;
+    unsigned sign = 0;
+    if (x==0){
+        return x;
+    } else if(x<0){
+        absx = -x;
+        sign = 0x80000000;
+    }
+    while(1){
+        if(absx & 0x80000000){
+            absx = absx<<1;
+            pos += 1;
+            break;
+        } else {
+            absx = absx<<1;
+            pos += 1;
+        }
+    }
+    if((absx&0x1ff) > 0x100){
+        flag = 1;
+    } else if((absx&0x3ff) == 0x300){
+        flag = 1;
+    }
+    return sign + (absx>>9) + ((159-pos)<<23) + flag;
 }
 /*
  * float_twice - Return bit-level equivalent of expression 2*f for
@@ -319,5 +344,14 @@ unsigned float_i2f(int x) {
  *   Rating: 4
  */
 unsigned float_twice(unsigned uf) {
-  return 2;
+  unsigned exper = uf>>23 & 0xff;
+  if (exper == 255){
+      return uf;
+  } else if(exper == 0){
+      return ((uf & 0x7fffff)<<1) | (uf & 0x80000000);
+  } else{
+      exper = (exper + 1) & 0xff;
+      uf = (uf & 0x807fffff) | (exper << 23);
+      return uf;
+  }
 }
