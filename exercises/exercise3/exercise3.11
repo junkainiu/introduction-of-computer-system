@@ -1,0 +1,3 @@
+%rdx = 0
+movq $0, %rdx
+movq 7, xorq 3

@@ -1,0 +1,17 @@
+movsbl (%rdi), %eax
+movl %eax, (%rsi)
+
+movsbl (%rdi), %eax
+movl %eax, (%rsi)
+
+movzbl (%rdi), %rax
+movq %rax, (%rsi)
+
+movl (%rdi), %eax
+movb %al, (%rsi)
+
+movl (%rdi), %eax
+movb %al, (%rsi)
+
+movsbw (%rdi), %ax
+movw %ax, (%rsi)
